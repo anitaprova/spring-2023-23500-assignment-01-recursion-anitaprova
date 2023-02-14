@@ -2,10 +2,15 @@
 #include <string>
 #include "knights.cpp"
 
-int main() {
+int main()
+{
 	std::string maze[5][5];
-	int lines = load("maze.dat", maze);
-	solve(maze, lines, 0, 4);
-	
+	int lines;
+	lines = load("maze.dat", maze);
+	bool solved = false;
+
+	print(maze, lines);
+	//solve(maze, lines, 0, 0, 1, solved);
+
 	return 0;
 }

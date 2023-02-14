@@ -3,40 +3,47 @@
 #include <string>
 #include "map.dat"
 
-int load(std::string filename, std::string *maze) {
-  std::ifstream infile(filename);
-  int i=0;
-  while(std::getline(infile,maze[i])){
-      i++;
-    }
-  return i;
+int load(std::string filename, std::string *maze)
+{
+	std::ifstream infile(filename);
+	int i = 0;
+	while (std::getline(infile, maze[i]))
+	{
+		i++;
+	}
+	return i;
 }
 
-void print(std::string maze[][], int lines){
-  std::cout << "[0;0H\n";
+void print(std::string maze[5][5], int lines)
+{
+	std::cout << "[0;0H\n";
 
-  for (int i = 0; i < lines; i++){
-    std::cout << maze[i] << "\n";
-  }
-  
+	for (int i = 0; i < lines; i++)
+	{
+		std::cout << maze[i] << "\n";
+	}
 }
 
-char me = 'N';
-char empty = '.';
-int i = 1;
-void solve(std::string maze[][], int row, int col) {
-	if(!empty){
+std::string me = "N";
+std::string empty = " ";
+std::string path = ".";
+
+void solve(std::string maze[5][5], int lines, int row, int col, int i, bool solved)
+{
+	if (maze[row][col] == empty) //out of bounds
+	{
 		return;
 	}
-	
-	maze[row][col] = me;
-	print(maze,lines);
 
-	solve(maze, lines, row + 2, col + 1);
-	solve(maze, lines, row + 2, col - 1);
-	solve(maze, lines, row + 1, col + 2);
-	solve(maze, lines, row + 1, col - 1);
+	if(i == 25){
+		solved = true;
+		return;
+	}
 
-	maze[row][col] = i;
-	i++;
+	if (!solved) solve(maze, lines, row + 2, col + 1, i++, solved);
+	if (!solved) solve(maze, lines, row + 2, col - 1, i++, solved);
+	if (!solved) solve(maze, lines, row + 1, col + 2, i++, solved);
+	if (!solved) solve(maze, lines, row + 1, col - 2, i++, solved);
+
+	if(!solved) maze[row][col] = i;
 }
