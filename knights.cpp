@@ -5,10 +5,9 @@
 #include "map"
 
 std::string me = "N";
-std::string empty = " ";
 std::string path = ".";
 
-void load(std::string filename, std::string maze[8][8])
+void load(std::string filename, std::string maze[5][5])
 {
 	std::ifstream infile(filename);
 	int r = 0;
@@ -26,42 +25,46 @@ void load(std::string filename, std::string maze[8][8])
 	}
 }
 
-void print(std::string maze[8][8])
+void print(std::string maze[5][5])
 {
-	std::cout << "[0;0H\n";
+	//std::cout << "[0;0H\n";
 
-	for (int i = 0; i < 8; i++)
+	for (int i = 0; i < 5; i++)
 	{
-		for (int j = 0; j < 8; j++)
+		for (int j = 0; j < 5; j++)
 		{
 			std::cout << maze[i][j];
 		}
 		std::cout << "\n";
 	}
+	std::cout << "\n";
 }
 
-void solve(std::string maze[8][8], int row, int col, int i, bool solved)
+void solve(std::string maze[5][5], int row, int col, int i, bool solved)
 {
-	if (maze[row][col] == empty) // out of bounds
-	{
+	if(maze[row][col] == me) {
 		return;
 	}
 
-	if (i == 64) //no empty spaces left
+	if (i == 25) // no empty spaces left
 	{
 		solved = true;
 		return;
 	}
 
+	maze[row][col] = me;
 	print(maze);
 
-	if (!solved)
+	if (!solved && row + 2 > 5 && col + 1 > 5)
 		solve(maze, row + 2, col + 1, i++, solved);
-	if (!solved)
+
+	if (!solved && row + 2 > 5 && col - 1 > 5)
 		solve(maze, row + 2, col - 1, i++, solved);
-	if (!solved)
+
+	if (!solved && row + 1 > 5 && col + 2 > 5)
 		solve(maze, row + 1, col + 2, i++, solved);
-	if (!solved)
+
+	if (!solved && row + 1 > 5 && col - 2 > 5)
 		solve(maze, row + 1, col - 2, i++, solved);
 
 	if (!solved)
