@@ -12,7 +12,7 @@ int main()
 	bool solved = false;
 
 	print(maze);
-	solve(maze, 0, 0, 1, solved);
+	solve(maze, 0, 3, 1, solved);
 
 	return 0;
 }

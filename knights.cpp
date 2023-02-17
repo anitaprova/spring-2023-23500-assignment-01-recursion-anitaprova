@@ -55,7 +55,7 @@ void solve(std::string maze[5][5], int row, int col, int i, bool solved)
 	maze[row][col] = me;
 	print(maze);
 
-	if (!solved && row + 2 > 5 && col + 1 > 5)
+	if (!solved && row + 2 > 5 && col + 1 > 5) //doesnt go out of bounds
 		solve(maze, row + 2, col + 1, i++, solved);
 
 	if (!solved && row + 2 > 5 && col - 1 > 5)
