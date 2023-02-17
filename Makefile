@@ -1,8 +1,9 @@
-main: knights.o
-	g++ -o main knights.o
+main: main.o
+	g++ -o main main.o
 
-knights.o: knights.cpp
-	g++ -c knights.cpp
+main.o: main.cpp knights.o
+
+knights.o: knights.cpp knights.h
 
 clean:
-	rm -f main tests main.o funcs.o tests.o
+	rm -f main main.o knights.o

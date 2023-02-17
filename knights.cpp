@@ -1,49 +1,69 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include "map.dat"
-
-int load(std::string filename, std::string *maze)
-{
-	std::ifstream infile(filename);
-	int i = 0;
-	while (std::getline(infile, maze[i]))
-	{
-		i++;
-	}
-	return i;
-}
-
-void print(std::string maze[5][5], int lines)
-{
-	std::cout << "[0;0H\n";
-
-	for (int i = 0; i < lines; i++)
-	{
-		std::cout << maze[i] << "\n";
-	}
-}
+#include <unistd.h>
+#include "map"
 
 std::string me = "N";
 std::string empty = " ";
 std::string path = ".";
 
-void solve(std::string maze[5][5], int lines, int row, int col, int i, bool solved)
+void load(std::string filename, std::string maze[8][8])
 {
-	if (maze[row][col] == empty) //out of bounds
+	std::ifstream infile(filename);
+	int r = 0;
+	int c = 0;
+	std::string line;
+	while (std::getline(infile, line))
+	{ // gets each line
+		for (int i = 0; i < line.length(); i++)
+		{
+			maze[r][c] = line[i];
+			c++;
+		}
+		r++;
+		c = 0;
+	}
+}
+
+void print(std::string maze[8][8])
+{
+	std::cout << "[0;0H\n";
+
+	for (int i = 0; i < 8; i++)
+	{
+		for (int j = 0; j < 8; j++)
+		{
+			std::cout << maze[i][j];
+		}
+		std::cout << "\n";
+	}
+}
+
+void solve(std::string maze[8][8], int row, int col, int i, bool solved)
+{
+	if (maze[row][col] == empty) // out of bounds
 	{
 		return;
 	}
 
-	if(i == 25){
+	if (i == 64) //no empty spaces left
+	{
 		solved = true;
 		return;
 	}
 
-	if (!solved) solve(maze, lines, row + 2, col + 1, i++, solved);
-	if (!solved) solve(maze, lines, row + 2, col - 1, i++, solved);
-	if (!solved) solve(maze, lines, row + 1, col + 2, i++, solved);
-	if (!solved) solve(maze, lines, row + 1, col - 2, i++, solved);
+	print(maze);
 
-	if(!solved) maze[row][col] = i;
+	if (!solved)
+		solve(maze, row + 2, col + 1, i++, solved);
+	if (!solved)
+		solve(maze, row + 2, col - 1, i++, solved);
+	if (!solved)
+		solve(maze, row + 1, col + 2, i++, solved);
+	if (!solved)
+		solve(maze, row + 1, col - 2, i++, solved);
+
+	if (!solved)
+		maze[row][col] = i;
 }
