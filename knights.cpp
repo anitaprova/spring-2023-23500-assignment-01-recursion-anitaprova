@@ -27,7 +27,7 @@ void load(std::string filename, std::string maze[5][5])
 
 void print(std::string maze[5][5])
 {
-	//std::cout << "[0;0H\n";
+	// std::cout << "[0;0H\n";
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -42,7 +42,8 @@ void print(std::string maze[5][5])
 
 void solve(std::string maze[5][5], int row, int col, int i, bool solved)
 {
-	if(maze[row][col] == me) {
+	if (maze[row][col] == me)
+	{
 		return;
 	}
 
@@ -55,18 +56,30 @@ void solve(std::string maze[5][5], int row, int col, int i, bool solved)
 	maze[row][col] = me;
 	print(maze);
 
-	if (!solved && row + 2 > 5 && col + 1 > 5) //doesnt go out of bounds
+	if (!solved && row + 2 < 5 && col + 1 < 5) // doesnt go out of bounds
 		solve(maze, row + 2, col + 1, i++, solved);
 
-	if (!solved && row + 2 > 5 && col - 1 > 5)
+	if (!solved && row + 2 < 5 && col - 1 >= 0)
 		solve(maze, row + 2, col - 1, i++, solved);
 
-	if (!solved && row + 1 > 5 && col + 2 > 5)
+	if (!solved && row + 1 < 5 && col + 2 < 5)
 		solve(maze, row + 1, col + 2, i++, solved);
 
-	if (!solved && row + 1 > 5 && col - 2 > 5)
+	if (!solved && row + 1 < 5 && col - 2 >= 0)
 		solve(maze, row + 1, col - 2, i++, solved);
 
-	if (!solved)
-		maze[row][col] = i;
+	if (!solved && row - 1 >= 0 && col - 2 >= 0)
+		solve(maze, row - 1, col - 2, i++, solved);
+
+	if (!solved && row - 1 >= 0 && col + 2 < 5)
+		solve(maze, row - 1, col + 2, i++, solved);
+
+	if (!solved && row - 2 >= 0 && col - 1 >= 0)
+		solve(maze, row - 2, col - 1, i++, solved);
+
+	if (!solved && row - 2 >= 0 && col + 1 < 5)
+		solve(maze, row - 2, col + 1, i++, solved);
+
+	/*if (!solved)
+		maze[row][col] = i+"";*/
 }
