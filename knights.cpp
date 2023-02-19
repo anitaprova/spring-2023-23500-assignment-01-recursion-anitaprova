@@ -6,6 +6,7 @@
 
 std::string me = "N";
 std::string path = ".";
+std::string visited = "v";
 
 void load(std::string filename, std::string maze[5][5])
 {
@@ -27,7 +28,7 @@ void load(std::string filename, std::string maze[5][5])
 
 void print(std::string maze[5][5])
 {
-	// std::cout << "[0;0H\n";
+	std::cout << "[0;0H\n";
 
 	for (int i = 0; i < 5; i++)
 	{
@@ -40,9 +41,25 @@ void print(std::string maze[5][5])
 	std::cout << "\n";
 }
 
-void solve(std::string maze[5][5], int row, int col, int i, bool solved)
+void print(int solution[5][5])
 {
-	if (maze[row][col] == me)
+	for (int i = 0; i < 5; i++)
+	{
+		for (int j = 0; j < 5; j++)
+		{
+			if (solution[i][j] < 10 && solution[i][j] > 0)
+			{
+				std::cout << " ";
+			}
+			std::cout << std::to_string(solution[i][j]) + ":";
+		}
+		std::cout << "\n";
+	}
+}
+
+void solve(std::string maze[5][5], int row, int col, int i, bool solved, int s[5][5])
+{
+	if (maze[row][col] == me || maze[row][col] == visited)
 	{
 		return;
 	}
@@ -54,32 +71,35 @@ void solve(std::string maze[5][5], int row, int col, int i, bool solved)
 	}
 
 	maze[row][col] = me;
+	s[row][col] = i;
+	i++;
+	usleep(150000);
 	print(maze);
 
 	if (!solved && row + 2 < 5 && col + 1 < 5) // doesnt go out of bounds
-		solve(maze, row + 2, col + 1, i++, solved);
+		solve(maze, row + 2, col + 1, i, solved, s);
 
 	if (!solved && row + 2 < 5 && col - 1 >= 0)
-		solve(maze, row + 2, col - 1, i++, solved);
+		solve(maze, row + 2, col - 1, i, solved, s);
 
 	if (!solved && row + 1 < 5 && col + 2 < 5)
-		solve(maze, row + 1, col + 2, i++, solved);
+		solve(maze, row + 1, col + 2, i, solved, s);
 
 	if (!solved && row + 1 < 5 && col - 2 >= 0)
-		solve(maze, row + 1, col - 2, i++, solved);
+		solve(maze, row + 1, col - 2, i, solved, s);
 
 	if (!solved && row - 1 >= 0 && col - 2 >= 0)
-		solve(maze, row - 1, col - 2, i++, solved);
+		solve(maze, row - 1, col - 2, i, solved, s);
 
 	if (!solved && row - 1 >= 0 && col + 2 < 5)
-		solve(maze, row - 1, col + 2, i++, solved);
+		solve(maze, row - 1, col + 2, i, solved, s);
 
 	if (!solved && row - 2 >= 0 && col - 1 >= 0)
-		solve(maze, row - 2, col - 1, i++, solved);
+		solve(maze, row - 2, col - 1, i, solved, s);
 
 	if (!solved && row - 2 >= 0 && col + 1 < 5)
-		solve(maze, row - 2, col + 1, i++, solved);
+		solve(maze, row - 2, col + 1, i, solved, s);
 
-	/*if (!solved)
-		maze[row][col] = i+"";*/
+	if (!solved)
+		maze[row][col] = visited;
 }
